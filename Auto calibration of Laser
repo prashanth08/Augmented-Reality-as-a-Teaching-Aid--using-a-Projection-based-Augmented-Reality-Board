@@ -1,0 +1,15 @@
+The methods of calibration of laser are as given below.
+ 1. Tracking algorithm
+Our system is quite flexible, allowing for a large range of screen sizes, as well as multiple configuration of the camera-screen set.
+Assumptions
+The system will work as long as the three following conditions are filled:
+ The screen is entirely visible (and in focus) inside the field of view of the camera
+There is no relative movement between the screen and the camera once the system is started
+ The laser spot is brighter than the rest of the screen
+Preprocessing
+The first step is to estimate the pose of the screen in order to accurately compute the pointer position. In order to achieve that, we detect the position of the four corners of the computer screen and store them for future frame. To help their detection, we maximize the contrast with the surroundings by projecting a white blank screen. Also, to compensate for the phase difference between the projector and the camera, the binary image of the screen is accumulated over ten frames to get a more accurate estimate of the corners.
+The homograph matrix describing the mapping between the camera plane P and the display screen plane P’ is then computed from the four detected corners in image coordinates and the four image screen corners in screen coordinates. A 3×3 homography matrix is a mathematical tool used to compute the projection from a plane P onto another plane P’ when both planes are defined in a 3D space.
+4.3.3 Processing Algorithm
+Once the preprocessing phase completed, the laser spot is tracked on the display screen in two steps.
+First, find the laser spot in the image by finding the centroid of the bounding box of the brightest spot on the screen. The laser spot is assumed to be the only part of the image with a high light intensity. Each pixel’s intensity is compared to a threshold and, if higher, added to the bounding box of the assumed laser spot. The center of that bounding box is assumed to be the centroid of the laser spot.
+Second, to eliminate laser spots outside of the display screen, the laser spot’s centroid is compared to each of the four previously computed corners to determine if it is inside the display screen. If that is the case, the homography is applied to the detected laser spot coordinates to map them in pattern space, and therefore in screen coordinate space. This leads to a position on the screen that is transferred to a cursor position.
