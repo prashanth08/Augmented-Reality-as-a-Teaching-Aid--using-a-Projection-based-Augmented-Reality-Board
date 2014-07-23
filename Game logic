@@ -1,0 +1,3 @@
+Game Logic
+We designed our game logic in with openFrameworks. It is a Quiz Application with five subjects namely English, Science, Geography, Biology and Math. The logic is very simple, each subject is divided into beginners, intermediate and advanced. Each level has 25 questions.
+When the user clicks the right answer: CORRECT is displayed and the user clicks the wrong answer: WRONG is displayed. The whole interaction is by a Laser Pointer.
